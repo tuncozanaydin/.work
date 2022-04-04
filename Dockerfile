@@ -1,9 +1,12 @@
 FROM pytorch/pytorch:1.11.0-cuda11.3-cudnn8-runtime
      MAINTAINER Tunc Aydin <tuncozanaydin@gmail.com>
 
+ARG UID=1000
+ARG GID=985
+
 WORKDIR /home/tunc/app
-# RUN groupadd -g $(id -g) staff
-RUN useradd -u 501 -g 20 tunc
+RUN groupadd -g ${GID} tunc
+RUN useradd -u ${UID} -g ${GID} tunc
 RUN usermod -aG sudo tunc
 RUN yes 123 | passwd
 
