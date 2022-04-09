@@ -23,7 +23,8 @@ RUN ln -s /home/tunc/.dotfiles/.emacs.d /home/tunc/
 RUN emacs --daemon
 RUN tic -x -o /home/tunc/.terminfo /home/tunc/.dotfiles/.config/alacritty/terminfo-24bit.src
 ENV TERM=xterm-24bit
-RUN pip install 'python-lsp-server[all]'
-RUN pip install -U setuptools
 ENV PATH=$PATH:/home/tunc/.local/bin
+RUN pip install -U setuptools
+RUN pip install pyls-flake8 pyls-mypy pyls-isort python-lsp-black pyls-memestra pylsp-rope
+RUN pip install 'python-lsp-server[all]'
 
