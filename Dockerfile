@@ -39,4 +39,4 @@ ENV PATH=$PATH:/home/tunc/.local/bin
 
 # Setup tensorboard (remember to invoke container with -p 6006:6006)
 RUN pip install tensorboard
-RUN alias tensorboard='tensorboard --host 0.0.0.0'
+RUN echo 'alias tensorboard="tensorboard --host 0.0.0.0"' >> ~/.bashrc
