@@ -11,20 +11,32 @@ RUN useradd -u ${uid} -g ${gid} ${username}
 RUN usermod -aG sudo tunc
 RUN yes 123 | passwd
 
+# Install basic tools
 RUN apt-get -y update
 RUN apt-get -y install software-properties-common
 RUN add-apt-repository ppa:kelleyk/emacs
 RUN apt-get -y update
-RUN apt-get -y install emacs27 git shellcheck sudo nano
+RUN apt-get -y install emacs27 git shellcheck sudo nano 
+
+# Switch to user mode for various configurations
 RUN chown -R tunc /home/tunc/
 USER tunc
+
+# Configure emacs
 RUN git clone https://github.com/tuncozanaydin/.dotfiles.git /home/tunc/.dotfiles
 RUN ln -s /home/tunc/.dotfiles/.emacs.d /home/tunc/
 RUN emacs --daemon
-RUN tic -x -o /home/tunc/.terminfo /home/tunc/.dotfiles/.config/alacritty/terminfo-24bit.src
-ENV TERM=xterm-24bit
-ENV PATH=$PATH:/home/tunc/.local/bin
+
+# Configure LSP
 RUN pip install -U setuptools
 RUN pip install pyls-flake8 pyls-mypy pyls-isort python-lsp-black pyls-memestra pylsp-rope
 RUN pip install 'python-lsp-server[all]'
 
+# Configure terminal
+RUN tic -x -o /home/tunc/.terminfo /home/tunc/.dotfiles/.config/alacritty/terminfo-24bit.src
+ENV TERM=xterm-24bit
+ENV PATH=$PATH:/home/tunc/.local/bin
+
+# Setup tensorboard (remember to invoke container with -p 6006:6006)
+RUN pip install tensorboard
+RUN alias tensorboard='tensorboard --host 0.0.0.0'
