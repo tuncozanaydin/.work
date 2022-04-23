@@ -8,5 +8,6 @@ docker run \
        --gpus all \
        -p 6006:6006 \
        --user $(id -u):$(id -g) \
-       -it \
-       $PROJECT_NAME
+       -d \
+       $PROJECT_NAME \
+       /bin/bash
